@@ -9,6 +9,10 @@ public class Location {
   }
 
   public bool addBiome(Biome biome) {
-    return false;
+    if (!biome.isCompatible(this)) {
+      return false;
+    }
+    Biomes.Add(biome);
+    return true;
   }
 }
