@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class Biome
 {
-    public string Name { get; }
-    public List<string> IncompatibleBiomes { get; }
+    public string Name {get;}
+    public List<string> IncompatibleBiomes {get;}
 
     public Biome(string name, List<string> incompatibleBiomes){
         Name = name;
