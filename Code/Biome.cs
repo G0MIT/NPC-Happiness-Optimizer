@@ -18,4 +18,5 @@ public class Biome
     public bool isCompatible(Location location){
         return location.Biomes.TrueForAll(biome => isCompatible(biome));
     }
+
 }

@@ -15,4 +15,10 @@ public class Location {
     Biomes.Add(biome);
     return true;
   }
+
+  public bool addNpc(NPC npc) {
+    NPCs.Add(npc);
+    npc.CurrentLocation = this;
+    return true;
+  }
 }
