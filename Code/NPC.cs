@@ -21,8 +21,8 @@ public class NPC {
   public int Value {get;}
   public Location CurrentLocation {get; set;}
 
-  public double BuyModifier {get;}
-  public double SellModifier {get;}
+  public double BuyModifier {get; private set;}
+  public double SellModifier {get; private set;}
   
   public List<string> LovedNpcs {get;}
   public List<string> LikedNpcs {get;}
@@ -43,8 +43,8 @@ public class NPC {
     Value = value;
     CurrentLocation = currentLocation;
 
-    BuyModifier = 1;
-    SellModifier = 1;
+    BuyModifier = 1.00;
+    SellModifier = 1.00;
     
     LovedNpcs = lovedNpcs;
     LikedNpcs = likedNpcs;
@@ -59,8 +59,12 @@ public class NPC {
     HatedBiomes = hatedBiomes;
   }
 
-  public double calculateHappiness() {
-    
+  public void calculateModifier() {
+    calculateNPCModifier();
+    calculateBiomeModifier();
+  }
+
+  private void calculateNPCModifier() {
     foreach (NPC npc in CurrentLocation.NPCs) {
       if (LovedNpcs.Contains(npc.Name)) {
         BuyModifier *= LOVE_BUY_MODIFIER;
@@ -76,6 +80,38 @@ public class NPC {
         SellModifier *= HATE_SELL_MODIFIER;
       }
     }
-    return 1;
+  }
+
+  private void calculateBiomeModifier() {
+    // TODO: Check biome priorities
+    double bestSellModifier = double.MinValue;
+    double bestBuyModifier = double.MaxValue;
+
+    foreach (Biome biome in CurrentLocation.Biomes) {
+      double currentSellModifier = 1.00;
+      double currentBuyModifier = 1.00;
+      
+      if (LovedBiomes.Contains(biome.Name)) {
+        currentBuyModifier = LOVE_BUY_MODIFIER;
+        currentSellModifier = LOVE_SELL_MODIFIER;
+      } else if (LikedBiomes.Contains(biome.Name)) {
+        currentBuyModifier = LIKE_BUY_MODIFIER;
+        currentSellModifier = LIKE_SELL_MODIFIER;
+      } else if (DislikedBiomes.Contains(biome.Name)) {
+        currentBuyModifier = DISLIKE_BUY_MODIFIER;
+        currentSellModifier = DISLIKE_SELL_MODIFIER;
+      } else if (HatedBiomes.Contains(biome.Name)) {
+        currentBuyModifier = HATE_BUY_MODIFIER;
+        currentSellModifier = HATE_SELL_MODIFIER;
+      }
+
+      if (currentSellModifier > bestSellModifier && currentBuyModifier < bestBuyModifier) {
+        bestSellModifier = currentSellModifier;
+        bestBuyModifier = currentBuyModifier;
+      }
+    }
+
+    BuyModifier *= bestBuyModifier;
+    SellModifier *= bestSellModifier;
   }
 }
