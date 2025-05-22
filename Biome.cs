@@ -5,7 +5,7 @@ namespace HappinessOptimizer
     public class Biome
     {
         public string Name { get; }
-        public List<string> IncompatibleBiomes { get; }
+        private readonly List<string> IncompatibleBiomes;
 
         public Biome(string name, List<string> incompatibleBiomes)
         {

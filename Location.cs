@@ -4,11 +4,13 @@ namespace HappinessOptimizer
 {
   public class Location
   {
-    public List<Biome> Biomes { get; }
-    public List<NPC> NPCs { get; }
-    public Location(List<Biome> biomes)
+    public List<Biome> Biomes { get; private set; }
+    public List<Npc> Npcs { get; private set; }
+    
+    public Location()
     {
-      Biomes = biomes;
+      Biomes = new();
+      Npcs = new();
     }
 
     public bool addBiome(Biome biome)
@@ -21,11 +23,23 @@ namespace HappinessOptimizer
       return true;
     }
 
-    public bool addNpc(NPC npc)
+    public bool addNpc(Npc npc)
     {
-      NPCs.Add(npc);
+      Npcs.Add(npc);
       npc.CurrentLocation = this;
       return true;
+    }
+
+    public override string ToString() {
+      string result = "Biomes: ";
+      foreach(Biome biome in Biomes) {
+        result += biome.Name + " ";
+      }
+      result += "\nNPCs:";
+      foreach(Npc npc in Npcs) {
+        result += "\n" + npc.Name;
+      }
+      return result;
     }
   }
 }

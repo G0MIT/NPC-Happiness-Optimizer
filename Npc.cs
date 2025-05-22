@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 namespace HappinessOptimizer
 {
-  public class NPC
+  public class Npc
   {
+    // TODO: Fix casing for constants
     protected const double LOVE_BUY_MODIFIER = 0.88;
     protected const double LIKE_BUY_MODIFIER = 0.94;
     protected const double DISLIKE_BUY_MODIFIER = 1.06;
@@ -19,7 +20,6 @@ namespace HappinessOptimizer
     private const double CROWDED_BUY_MODIFIER = 1.05;
     private const double CROWDED_SELL_MODIFIER = 0.95;
 
-
     protected const double MIN_BUY_MODIFIER = 1.50;
     protected const double MAX_BUY_MODIFIER = 1.33;
 
@@ -27,25 +27,27 @@ namespace HappinessOptimizer
     protected const double MIN_SELL_MODIFIER = 0.67;
 
     public string Name { get; }
-    public int Value { get; }
+    public int Value { get; set; }
     public Location CurrentLocation { get; set; }
+
+    public int Score { get { return (int) (Value / BuyModifier); } }
 
     public double BuyModifier { get; private set; }
     public double SellModifier { get; private set; }
 
-    public List<string> LovedNpcs { get; }
-    public List<string> LikedNpcs { get; }
+    private readonly List<string> LovedNpcs;
+    private readonly List<string> LikedNpcs;
 
-    public List<string> DislikedNpcs { get; }
-    public List<string> HatedNpcs { get; }
+    private readonly List<string> DislikedNpcs;
+    private readonly List<string> HatedNpcs;
 
-    public List<string> LovedBiomes { get; }
-    public List<string> LikedBiomes { get; }
+    private readonly List<string> LovedBiomes;
+    private readonly List<string> LikedBiomes;
 
-    public List<string> DislikedBiomes { get; }
-    public List<string> HatedBiomes { get; }
+    private readonly List<string> DislikedBiomes;
+    private readonly List<string> HatedBiomes;
 
-    public NPC(string name, int value, Location currentLocation, List<string> lovedNpcs, List<string> likedNpcs, List<string> dislikedNpcs, List<string> hatedNpcs, List<string> lovedBiomes, List<string> likedBiomes, List<string> dislikedBiomes, List<string> hatedBiomes)
+    public Npc(string name, int value, Location currentLocation, List<string> lovedNpcs, List<string> likedNpcs, List<string> dislikedNpcs, List<string> hatedNpcs, List<string> lovedBiomes, List<string> likedBiomes, List<string> dislikedBiomes, List<string> hatedBiomes)
     {
       Name = name;
       Value = value;
@@ -67,6 +69,28 @@ namespace HappinessOptimizer
       HatedBiomes = hatedBiomes;
     }
 
+    public Npc(string name, Location currentLocation, List<string> lovedNpcs, List<string> likedNpcs, List<string> dislikedNpcs, List<string> hatedNpcs, List<string> lovedBiomes, List<string> likedBiomes, List<string> dislikedBiomes, List<string> hatedBiomes)
+    {
+      Name = name;
+      Value = 0;
+      CurrentLocation = currentLocation;
+
+      BuyModifier = 1.00;
+      SellModifier = 1.00;
+
+      LovedNpcs = lovedNpcs;
+      LikedNpcs = likedNpcs;
+
+      DislikedNpcs = dislikedNpcs;
+      HatedNpcs = hatedNpcs;
+
+      LovedBiomes = lovedBiomes;
+      LikedBiomes = likedBiomes;
+
+      DislikedBiomes = dislikedBiomes;
+      HatedBiomes = hatedBiomes;
+    }
+    
     public void CalculateModifier()
     {
       CalculateNPCModifier();
@@ -92,7 +116,7 @@ namespace HappinessOptimizer
 
     private void CalculateNPCModifier()
     {
-      foreach (NPC npc in CurrentLocation.NPCs)
+      foreach(Npc npc in CurrentLocation.Npcs)
       {
         if (LovedNpcs.Contains(npc.Name))
         {
