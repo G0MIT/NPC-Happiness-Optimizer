@@ -8,7 +8,7 @@ namespace HappinessOptimizer
     public Solution() {
       Locations = new List<Location>();
     }
-    
+
     public Solution(List<Location> locations)
     {
       Locations = locations;

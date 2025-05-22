@@ -38,11 +38,11 @@ namespace HappinessOptimizer
         private readonly List<string> DislikedNpcs;
         private readonly List<string> HatedNpcs;
 
-        private readonly List<string> LovedBiomes;
-        private readonly List<string> LikedBiomes;
+        public List<string> LovedBiomes { get; }
+        public List<string> LikedBiomes { get; }
 
-        private readonly List<string> DislikedBiomes;
-        private readonly List<string> HatedBiomes;
+        public List<string> DislikedBiomes { get; }
+        public List<string> HatedBiomes { get; }
 
         public Npc(string name, int value, Location currentLocation, List<string> lovedNpcs, List<string> likedNpcs, List<string> dislikedNpcs, List<string> hatedNpcs, List<string> lovedBiomes, List<string> likedBiomes, List<string> dislikedBiomes, List<string> hatedBiomes)
         {
