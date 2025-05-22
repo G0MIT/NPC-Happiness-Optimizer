@@ -13,6 +13,10 @@ namespace HappinessOptimizer
       Npcs = new();
     }
 
+    public Location Clone() {
+      return (Location) MemberwiseClone();
+    }
+    
     public bool addBiome(Biome biome)
     {
       if (!biome.IsCompatible(this))
@@ -29,7 +33,16 @@ namespace HappinessOptimizer
       npc.CurrentLocation = this;
       return true;
     }
-
+    
+    public int Score()
+    {
+      int result = 0;
+      foreach(Npc npc in Npcs) {
+        result += npc.Score();
+      }
+      return result;
+    }
+    
     public override string ToString() {
       string result = "Biomes: ";
       foreach(Biome biome in Biomes) {

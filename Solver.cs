@@ -24,7 +24,21 @@ namespace HappinessOptimizer
     public Solution GenerateStartingSolution()
     {
       Solution solution = new();
-      solution.Locations.Add(new Location(new List<Biome>()));
+      for (int npcIndex = 0; npcIndex < Npcs.Count; npcIndex++) {
+        int bestLocationIndex = 0;
+        int bestScore = int.MinValue;
+        for (int locationIndex = 0; locationIndex < solution.Locations.Count; locationIndex++) {
+          Location tempSolution = solution.Locations[locationIndex].Clone();
+          tempSolution.addNpc(Npcs[npcIndex]);
+          if (tempSolution.Score() > bestScore) {
+            bestScore = tempSolution.Score();
+            bestLocationIndex = locationIndex;
+          }
+        }
+        if () {
+          
+        }
+      }
       return solution;
     }
 
