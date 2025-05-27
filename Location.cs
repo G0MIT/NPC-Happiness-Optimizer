@@ -13,13 +13,18 @@ namespace HappinessOptimizer
       Npcs = new();
     }
 
+    public Location(List<Biome> biomes, List<Npc> npcs) {
+      Biomes = biomes;
+      Npcs = npcs;
+    }
+    
     public Location Clone() {
-      return (Location) MemberwiseClone();
+      return new Location(new List<Biome>(Biomes), new List<Npc>(Npcs));
     }
     
     public bool addBiome(Biome biome)
     {
-      if (!biome.IsCompatible(this))
+      if (biome == null || !biome.IsCompatible(this))
       {
         return false;
       }
@@ -42,6 +47,25 @@ namespace HappinessOptimizer
       }
       return result;
     }
+
+    public int Score(Npc npc) {
+      Location location = Clone();
+      location.addNpc(npc);
+      return location.Score() - Score();
+    }
+
+    public int Score(Biome biome) {
+      Location location = Clone();
+      location.addBiome(biome);
+      return location.Score() - Score();
+    }
+
+    public int Score(Npc npc, Biome biome) {
+      Location location = Clone();
+      location.addNpc(npc);
+      location.addBiome(biome);
+      return location.Score() - Score();
+    }
     
     public override string ToString() {
       string result = "Biomes: ";
@@ -50,7 +74,7 @@ namespace HappinessOptimizer
       }
       result += "\nNPCs:";
       foreach(Npc npc in Npcs) {
-        result += "\n" + npc.Name;
+        result += "\n" + npc.Name + " with " + npc.BuyModifier + " buy modifier.";
       }
       return result;
     }

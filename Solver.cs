@@ -2,50 +2,92 @@ using System;
 using System.Collections.Generic;
 namespace HappinessOptimizer
 {
-  public class Solver
-  {
-    private Solution BestSolution;
-    private readonly List<Npc> Npcs;
-    private readonly List<Biome> Biomes;
-    
-    public Solver(List<Npc> npcs, List<Biome> biomes)
+    public class Solver
     {
-      BestSolution = GenerateStartingSolution();
-      Npcs = npcs;
-      Biomes = biomes;
-    }
-    
-    public Solution Solve()
-    {
-      // TODO: Implement solve
-      return BestSolution;
-    }
-    
-    public Solution GenerateStartingSolution()
-    {
-      Solution solution = new();
-      for (int npcIndex = 0; npcIndex < Npcs.Count; npcIndex++) {
-        int bestLocationIndex = 0;
-        int bestScore = int.MinValue;
-        for (int locationIndex = 0; locationIndex < solution.Locations.Count; locationIndex++)
+        private Solution BestSolution;
+        private readonly List<Npc> Npcs;
+        private readonly List<Biome> Biomes;
+
+        public Solver(List<Npc> npcs, List<Biome> biomes)
         {
-          Location tempSolution = solution.Locations[locationIndex].Clone();
-          tempSolution.addNpc(Npcs[npcIndex]);
-          if (tempSolution.Score() > bestScore){
-            bestScore = tempSolution.Score();
-            bestLocationIndex = locationIndex;
-          }
+            Npcs = npcs;
+            Biomes = biomes;
+            BestSolution = GenerateStartingSolution();
         }
-      }
-      return solution;
+
+        public Solution Solve()
+        {
+            // TODO: Implement solve
+            return BestSolution;
+        }
+
+        public Solution GenerateStartingSolution()
+        {
+            Solution solution = new();
+            for (int npcIndex = 0; npcIndex < Npcs.Count; npcIndex++)
+            {
+                solution.Locations.Add(new Location());
+                int bestScore = int.MinValue;
+                int indexToModify = 0;
+                Biome bestBiome = null;
+                for (int locationIndex = 0; locationIndex < solution.Locations.Count; locationIndex++)
+                {
+                    int score = solution.Locations[locationIndex].Score(Npcs[npcIndex]);
+                    Biome biomeToAdd = null;
+
+                    foreach (string biomeName in Npcs[npcIndex].LovedBiomes)
+                    {
+                        if (String.IsNullOrEmpty(biomeName)) {
+                            continue;
+                        }
+                        Biome biome = Biomes.Find(b => b.Name == biomeName);
+                        int hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        // Console.WriteLine(Npcs[npcIndex].Name + " in " + biome.Name + " has " + hyrbridScore + " score.");
+                        if (hyrbridScore > score)
+                        {
+                            score = hyrbridScore;
+                            biomeToAdd = biome;
+                        }
+                    }
+
+                    foreach (string biomeName in Npcs[npcIndex].LikedBiomes)
+                    {
+                        if (String.IsNullOrEmpty(biomeName)) {
+                            continue;
+                        }
+                        Biome biome = Biomes.Find(b => b.Name == biomeName);
+                        int hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        // Console.WriteLine(Npcs[npcIndex].Name + " in " + biome.Name + " has " + hyrbridScore + " score.");
+                        if (hyrbridScore > score)
+                        {
+                            score = hyrbridScore;
+                            biomeToAdd = biome;
+                        }
+                    }
+
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        indexToModify = locationIndex;
+                        bestBiome = biomeToAdd;
+                    }
+                }
+                solution.Locations[indexToModify].addNpc(Npcs[npcIndex]);
+                solution.Locations[indexToModify].addBiome(bestBiome);
+                if (indexToModify != solution.Locations.Count - 1)
+                {
+                    solution.Locations.RemoveAt(solution.Locations.Count - 1);
+                }
+            }
+            return solution;
+        }
+
+        public List<Solution> GenerateNearestSolutions()
+        {
+            // TODO: Implement generateNearestSolutions
+            return new List<Solution>();
+        }
+
+
     }
-
-    public List<Solution> GenerateNearestSolutions()
-    {
-      // TODO: Implement generateNearestSolutions
-      return new List<Solution>();
-    }
-
-
-  }
 }
