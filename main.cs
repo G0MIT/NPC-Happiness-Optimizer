@@ -8,14 +8,15 @@ class Program
     {
         List<Npc> npcs = new List<Npc>
         {
-            new Npc("Angler", 90, null, new string[]{""}, new string[]{"Princess","Party Girl","Demolitionist","Tax Collector"}, new string[]{""}, new string[]{"Tavernkeep"}, new string[]{""}, new string[]{"Ocean"}, new string[]{"Desert"}, new string[]{""}),
+            new Npc("angler", "Angler", 90, null, new string[]{""}, new string[]{"Princess","Party Girl","Demolitionist","Tax Collector"}, new string[]{""}, new string[]{"Tavernkeep"}, new string[]{""}, new string[]{"Ocean"}, new string[]{"Desert"}, new string[]{""}),
             new Npc("Goblin Tinkerer", 100, null, new string[]{"Mechanic"}, new string[]{"Princess","Dye Trader"}, new string[]{"Clothier"}, new string[]{"Stylist"}, new string[]{""}, new string[]{"Underground"}, new string[]{"Jungle"}, new string[]{""})
         };
         List<Biome> biomes = new List<Biome>
         {
-            new Biome("Ocean", new List<string>{"Desert"}),
-            new Biome("Desert", new List<string>{"Ocean"}),
-            new Biome("Underground", new List<string>{""})
+            new Biome("ocean", 3, new List<string>{"Desert"}),
+            new Biome("desert", "Desert" 3, new List<string>{"Ocean"}),
+            new Biome("hallow", "Hallowed", 2, new List<string>{""}),
+            new Biome("underground", 1, new List<string>{""})
         };
         Solver solver = new Solver(npcs, biomes);
         Solution solution = solver.Solve();

@@ -37,12 +37,12 @@ namespace HappinessOptimizer
 
                     foreach (string biomeName in Npcs[npcIndex].LovedBiomes)
                     {
-                        if (String.IsNullOrEmpty(biomeName)) {
+                        if (String.IsNullOrEmpty(biomeName))
+                        {
                             continue;
                         }
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
                         int hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                        // Console.WriteLine(Npcs[npcIndex].Name + " in " + biome.Name + " has " + hyrbridScore + " score.");
                         if (hyrbridScore > score)
                         {
                             score = hyrbridScore;
@@ -52,12 +52,12 @@ namespace HappinessOptimizer
 
                     foreach (string biomeName in Npcs[npcIndex].LikedBiomes)
                     {
-                        if (String.IsNullOrEmpty(biomeName)) {
+                        if (String.IsNullOrEmpty(biomeName))
+                        {
                             continue;
                         }
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
                         int hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                        // Console.WriteLine(Npcs[npcIndex].Name + " in " + biome.Name + " has " + hyrbridScore + " score.");
                         if (hyrbridScore > score)
                         {
                             score = hyrbridScore;

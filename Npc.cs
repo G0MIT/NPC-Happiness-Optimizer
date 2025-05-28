@@ -9,8 +9,10 @@ namespace HappinessOptimizer
 
         protected const double LoveSellModifier = 1.14, LikeSellModifier = 1.06, DislikeSellModifier = 0.94, HateSellModifier = 0.89;
 
+        private const int SolitudeThreshold = 3;
         private const double SolitudeBuyModifier = 0.95, SolitudeSellModifier = 1.05;
 
+        private const int CrowdedThreshold = 5;
         private const double CrowdedBuyModifier = 1.05, CrowdedSellModifier = 0.95;
 
         protected const double MinBuyModifier = 0.75, MaxBuyModifier = 1.33;
@@ -18,6 +20,7 @@ namespace HappinessOptimizer
         protected const double MaxSellModifier = 1.50, MinSellModifier = 0.67;
 
         public string Name { get; }
+        public string DisplayName { get; }
         public int Value { get; set; }
         public Location CurrentLocation { get; set; }
 
@@ -32,9 +35,10 @@ namespace HappinessOptimizer
         public string[] DislikedBiomes { get; }
         public string[] HatedBiomes { get; }
 
-        public Npc(string name, int value, Location currentLocation, string[] lovedNpcs, string[] likedNpcs, string[] dislikedNpcs, string[] hatedNpcs, string[] lovedBiomes, string[] likedBiomes, string[] dislikedBiomes, string[] hatedBiomes)
+        public Npc(string name, string displayName, int value, Location currentLocation, string[] lovedNpcs, string[] likedNpcs, string[] dislikedNpcs, string[] hatedNpcs, string[] lovedBiomes, string[] likedBiomes, string[] dislikedBiomes, string[] hatedBiomes)
         {
             Name = name;
+            DisplayName = displayName;
             Value = value;
             CurrentLocation = currentLocation;
 
@@ -54,9 +58,10 @@ namespace HappinessOptimizer
             HatedBiomes = hatedBiomes;
         }
 
-        public Npc(string name, string[] lovedNpcs, string[] likedNpcs, string[] dislikedNpcs, string[] hatedNpcs, string[] lovedBiomes, string[] likedBiomes, string[] dislikedBiomes, string[] hatedBiomes)
+        public Npc(string name, string displayName, string[] lovedNpcs, string[] likedNpcs, string[] dislikedNpcs, string[] hatedNpcs, string[] lovedBiomes, string[] likedBiomes, string[] dislikedBiomes, string[] hatedBiomes)
         {
             Name = name;
+            DisplayName = displayName;
             Value = 0;
             CurrentLocation = null;
 
@@ -76,13 +81,13 @@ namespace HappinessOptimizer
             HatedBiomes = hatedBiomes;
         }
 
-        public void CalculateModifier()
+        public void CalculateModifiers()
         {
             BuyModifier = 1.00;
             SellModifier = 1.00;
-            CalculateNPCModifier();
-            CalculateBiomeModifier();
-            CalculateSolitudeModifier();
+            CalculateNPCModifiers();
+            CalculateBiomeModifiers();
+            CalculateProximityModifiers();
             if (BuyModifier > MaxBuyModifier)
             {
                 BuyModifier = MaxBuyModifier;
@@ -102,7 +107,7 @@ namespace HappinessOptimizer
             }
         }
 
-        private void CalculateNPCModifier()
+        private void CalculateNPCModifiers()
         {
             foreach (Npc npc in CurrentLocation.Npcs)
             {
@@ -129,13 +134,13 @@ namespace HappinessOptimizer
             }
         }
 
-        private void CalculateBiomeModifier()
+        private void CalculateBiomeModifiers()
         {
             // TODO: Check biome priorities
             double bestSellModifier = double.MinValue;
             double bestBuyModifier = double.MaxValue;
             bool modify = false;
-            
+
             foreach (Biome biome in CurrentLocation.Biomes)
             {
                 double currentSellModifier = 1.00;
@@ -174,26 +179,39 @@ namespace HappinessOptimizer
                 }
             }
 
-            if (modify) {
+            if (modify)
+            {
                 BuyModifier *= bestBuyModifier;
                 SellModifier *= bestSellModifier;
             }
         }
 
-        //TODO: Implement Solitude Modifier
-        private void CalculateSolitudeModifier() {
-            if (CurrentLocation.Npcs.Count <= 3) {
+        private void CalculateProximityModifiers()
+        {
+            if (CurrentLocation.Npcs.Count <= SolitudeThreshold)
+            {
                 BuyModifier *= SolitudeBuyModifier;
                 SellModifier *= SolitudeSellModifier;
-            } else {
-                foreach ()
+            }
+            else
+            {
+                for (int i = CrowdedThreshold; i <= CurrentLocation.Npcs.Count; i++)
+                {
+                    BuyModifier *= CrowdedBuyModifier;
+                    SellModifier *= CrowdedSellModifier;
+                }
             }
         }
+
         public int Score()
         {
-            CalculateModifier();
-            // Console.WriteLine(Name + " has " + BuyModifier + " buy modifier.");
+            CalculateModifiers();
             return (int)(Value / BuyModifier);
+        }
+
+        public override string ToString()
+        {
+            return Name + " with " + BuyModifier + " buy modifier.";
         }
     }
 }

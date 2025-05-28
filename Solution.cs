@@ -15,14 +15,16 @@ namespace HappinessOptimizer
             Locations = locations;
         }
 
-        public int Score() {
+        public int Score()
+        {
             int result = 0;
-            foreach (Location location in Locations) {
+            foreach (Location location in Locations)
+            {
                 result += location.Score();
             }
             return result;
         }
-        
+
         public override string ToString()
         {
             string result = "";
