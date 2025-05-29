@@ -85,7 +85,11 @@ namespace HappinessOptimizer
         {
             BuyModifier = 1.00;
             SellModifier = 1.00;
-            CalculateNPCModifiers();
+            if (CurrentLocation == null)
+            {
+                return;
+            }
+            CalculateNpcModifiers();
             CalculateBiomeModifiers();
             CalculateProximityModifiers();
             if (BuyModifier > MaxBuyModifier)
@@ -107,10 +111,11 @@ namespace HappinessOptimizer
             }
         }
 
-        private void CalculateNPCModifiers()
+        private void CalculateNpcModifiers()
         {
             foreach (Npc npc in CurrentLocation.Npcs)
             {
+                // TODO: Consolidate code
                 if (Array.Exists(LovedNpcs, element => element.Equals(npc.Name)))
                 {
                     BuyModifier *= LoveBuyModifier;
@@ -137,6 +142,7 @@ namespace HappinessOptimizer
         private void CalculateBiomeModifiers()
         {
             // TODO: Check biome priorities
+            // TODO: Consolidate code
             double bestSellModifier = double.MinValue;
             double bestBuyModifier = double.MaxValue;
             bool modify = false;
@@ -203,15 +209,26 @@ namespace HappinessOptimizer
             }
         }
 
-        public int Score()
+        public double Score()
         {
             CalculateModifiers();
-            return (int)(Value / BuyModifier);
+            return Value / BuyModifier;
+        }
+
+        public Npc Clone()
+        {
+            return (Npc)MemberwiseClone();
+        }
+
+        public bool CompareTo(Npc other)
+        {
+            return Score() > other.Score();
         }
 
         public override string ToString()
         {
-            return Name + " with " + BuyModifier + " buy modifier.";
+            CalculateModifiers();
+            return DisplayName + " has " + (int)(BuyModifier * 100) + "% buy modifier, " + (int)(SellModifier * 100) + "% sell modifier and a value of " + Value;
         }
     }
 }

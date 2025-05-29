@@ -41,9 +41,9 @@ namespace HappinessOptimizer
             return true;
         }
 
-        public int Score()
+        public double Score()
         {
-            int result = 0;
+            double result = 0;
             foreach (Npc npc in Npcs)
             {
                 result += npc.Score();
@@ -51,24 +51,24 @@ namespace HappinessOptimizer
             return result;
         }
 
-        public int Score(Npc npc)
+        public double Score(Npc npc)
         {
             Location location = Clone();
-            location.addNpc(npc);
+            location.addNpc(npc.Clone());
             return location.Score() - Score();
         }
 
-        public int Score(Biome biome)
+        public double Score(Biome biome)
         {
             Location location = Clone();
             location.addBiome(biome);
             return location.Score() - Score();
         }
 
-        public int Score(Npc npc, Biome biome)
+        public double Score(Npc npc, Biome biome)
         {
             Location location = Clone();
-            location.addNpc(npc);
+            location.addNpc(npc.Clone());
             location.addBiome(biome);
             return location.Score() - Score();
         }
@@ -84,7 +84,7 @@ namespace HappinessOptimizer
             result += "\nNPCs:";
             foreach (Npc npc in Npcs)
             {
-                result += "\n" + npc;
+                result += "\n" + npc.DisplayName;
             }
             return result;
         }

@@ -15,9 +15,9 @@ namespace HappinessOptimizer
             Locations = locations;
         }
 
-        public int Score()
+        public double Score()
         {
-            int result = 0;
+            double result = 0;
             foreach (Location location in Locations)
             {
                 result += location.Score();

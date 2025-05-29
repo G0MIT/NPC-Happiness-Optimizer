@@ -27,12 +27,12 @@ namespace HappinessOptimizer
             for (int npcIndex = 0; npcIndex < Npcs.Count; npcIndex++)
             {
                 solution.Locations.Add(new Location());
-                int bestScore = int.MinValue;
+                double bestScore = int.MinValue;
                 int indexToModify = 0;
                 Biome bestBiome = null;
                 for (int locationIndex = 0; locationIndex < solution.Locations.Count; locationIndex++)
                 {
-                    int score = solution.Locations[locationIndex].Score(Npcs[npcIndex]);
+                    double score = solution.Locations[locationIndex].Score(Npcs[npcIndex]);
                     Biome biomeToAdd = null;
 
                     foreach (string biomeName in Npcs[npcIndex].LovedBiomes)
@@ -42,7 +42,7 @@ namespace HappinessOptimizer
                             continue;
                         }
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        int hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        double hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
                         if (hyrbridScore > score)
                         {
                             score = hyrbridScore;
@@ -57,7 +57,7 @@ namespace HappinessOptimizer
                             continue;
                         }
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        int hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        double hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
                         if (hyrbridScore > score)
                         {
                             score = hyrbridScore;
@@ -74,6 +74,14 @@ namespace HappinessOptimizer
                 }
                 solution.Locations[indexToModify].addNpc(Npcs[npcIndex]);
                 solution.Locations[indexToModify].addBiome(bestBiome);
+                // if (bestBiome != null)
+                // {
+                //     Console.WriteLine(bestBiome);
+                // }
+                // else
+                // {
+                //     Console.WriteLine("No biome");
+                // }
                 if (indexToModify != solution.Locations.Count - 1)
                 {
                     solution.Locations.RemoveAt(solution.Locations.Count - 1);

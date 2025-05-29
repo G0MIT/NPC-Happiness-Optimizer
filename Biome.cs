@@ -27,6 +27,9 @@ namespace HappinessOptimizer
             return location.Biomes.TrueForAll(IsCompatible);
         }
 
+        public bool CompareTo(Biome other) {
+            return Priority > other.Priority;
+        }
         public override string ToString()
         {
             return DisplayName;
