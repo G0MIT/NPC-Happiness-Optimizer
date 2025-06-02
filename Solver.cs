@@ -74,7 +74,7 @@ namespace HappinessOptimizer
                     }
                 }
                 solution.Locations[indexToModify].AddNpc(Npcs[npcIndex]);
-                solution.Locations[indexToModify].addBiome(bestBiome);
+                solution.Locations[indexToModify].AddBiome(bestBiome);
                 // if (bestBiome != null)
                 // {
                 //     Console.WriteLine(bestBiome + " " + Npcs[npcIndex] + " " + bestScore);

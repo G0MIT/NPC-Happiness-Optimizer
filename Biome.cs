@@ -24,7 +24,10 @@ namespace HappinessOptimizer
 
         public bool IsCompatible(Location location)
         {
-            return location.Biomes.TrueForAll(IsCompatible);
+            if (location.Biomes.Count > 0) {
+                return location.Biomes.TrueForAll(IsCompatible);
+            }
+            return true;
         }
 
         public bool CompareTo(Biome other) {

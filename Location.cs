@@ -24,7 +24,7 @@ namespace HappinessOptimizer
             return new Location(new List<Biome>(Biomes), new List<Npc>(Npcs));
         }
 
-        public bool addBiome(Biome biome)
+        public bool AddBiome(Biome biome)
         {
             if (biome == null || !biome.IsCompatible(this))
             {
@@ -61,7 +61,7 @@ namespace HappinessOptimizer
         public double Score(Biome biome)
         {
             Location location = Clone();
-            location.addBiome(biome);
+            location.AddBiome(biome);
             return location.Score() - Score();
         }
 
@@ -69,7 +69,7 @@ namespace HappinessOptimizer
         {
             Location location = Clone();
             location.AddNpc(npc.Clone());
-            location.addBiome(biome);
+            location.AddBiome(biome);
             return location.Score() - Score();
         }
 
