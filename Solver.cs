@@ -26,6 +26,7 @@ namespace HappinessOptimizer
             Solution solution = new();
             for (int npcIndex = 0; npcIndex < Npcs.Count; npcIndex++)
             {
+                Console.WriteLine("Adding NPC " + Npcs[npcIndex].DisplayName + " to the solution");
                 Console.WriteLine("Added new blank location to the list of locations");
                 solution.Locations.Add(new Location());
                 double bestScore = int.MinValue;
@@ -65,8 +66,8 @@ namespace HappinessOptimizer
                             }
                         }
                     }
-
-                    if (score > bestScore)
+                    Console.WriteLine("Score for location with index " + locationIndex + " is " + score);
+                    if (score >= bestScore)
                     {
                         bestScore = score;
                         indexToModify = locationIndex;
@@ -85,7 +86,6 @@ namespace HappinessOptimizer
                 // }
                 if (indexToModify != solution.Locations.Count - 1)
                 {
-                    Console.WriteLine("Removed new empty location");
                     solution.Locations.RemoveAt(solution.Locations.Count - 1);
                 }
             }
