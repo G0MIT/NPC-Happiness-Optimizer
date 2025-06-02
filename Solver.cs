@@ -35,14 +35,14 @@ namespace HappinessOptimizer
                 {
                     double score = solution.Locations[locationIndex].Score(Npcs[npcIndex]);
                     Biome biomeToAdd = null;
-                    
+
                     foreach (string biomeName in Npcs[npcIndex].LovedBiomes)
                     {
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        double hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                        if (hyrbridScore > score)
+                        double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        if (hybridScore > score)
                         {
-                            score = hyrbridScore;
+                            score = hybridScore;
                             biomeToAdd = biome;
                         }
                     }
@@ -50,10 +50,10 @@ namespace HappinessOptimizer
                     foreach (string biomeName in Npcs[npcIndex].LikedBiomes)
                     {
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        double hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                        if (hyrbridScore > score)
+                        double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        if (hybridScore > score)
                         {
-                            score = hyrbridScore;
+                            score = hybridScore;
                             biomeToAdd = biome;
                         }
                     }
