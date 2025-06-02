@@ -36,25 +36,33 @@ namespace HappinessOptimizer
                     double score = solution.Locations[locationIndex].Score(Npcs[npcIndex]);
                     Biome biomeToAdd = null;
 
+                    // Test loved biomes for this location
                     foreach (string biomeName in Npcs[npcIndex].LovedBiomes)
                     {
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                        if (hybridScore > score)
+                        if (biome != null && biome.IsCompatible(solution.Locations[locationIndex]))
                         {
-                            score = hybridScore;
-                            biomeToAdd = biome;
+                            double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                            if (hybridScore > score)
+                            {
+                                score = hybridScore;
+                                biomeToAdd = biome;
+                            }
                         }
                     }
 
+                    // Test liked biomes for this location
                     foreach (string biomeName in Npcs[npcIndex].LikedBiomes)
                     {
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                        if (hybridScore > score)
+                        if (biome != null && biome.IsCompatible(solution.Locations[locationIndex]))
                         {
-                            score = hybridScore;
-                            biomeToAdd = biome;
+                            double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                            if (hybridScore > score)
+                            {
+                                score = hybridScore;
+                                biomeToAdd = biome;
+                            }
                         }
                     }
 
