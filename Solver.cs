@@ -26,6 +26,7 @@ namespace HappinessOptimizer
             Solution solution = new();
             for (int npcIndex = 0; npcIndex < Npcs.Count; npcIndex++)
             {
+                Console.WriteLine("Added new blank location to the list of locations");
                 solution.Locations.Add(new Location());
                 double bestScore = int.MinValue;
                 int indexToModify = 0;
@@ -34,13 +35,9 @@ namespace HappinessOptimizer
                 {
                     double score = solution.Locations[locationIndex].Score(Npcs[npcIndex]);
                     Biome biomeToAdd = null;
-
+                    
                     foreach (string biomeName in Npcs[npcIndex].LovedBiomes)
                     {
-                        if (String.IsNullOrEmpty(biomeName))
-                        {
-                            continue;
-                        }
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
                         double hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
                         if (hyrbridScore > score)
@@ -52,10 +49,6 @@ namespace HappinessOptimizer
 
                     foreach (string biomeName in Npcs[npcIndex].LikedBiomes)
                     {
-                        if (String.IsNullOrEmpty(biomeName))
-                        {
-                            continue;
-                        }
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
                         double hyrbridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
                         if (hyrbridScore > score)
@@ -72,20 +65,21 @@ namespace HappinessOptimizer
                         bestBiome = biomeToAdd;
                     }
                 }
-                solution.Locations[indexToModify].addNpc(Npcs[npcIndex]);
+                solution.Locations[indexToModify].AddNpc(Npcs[npcIndex]);
                 solution.Locations[indexToModify].addBiome(bestBiome);
                 // if (bestBiome != null)
                 // {
-                //     Console.WriteLine(bestBiome);
+                //     Console.WriteLine(bestBiome + " " + Npcs[npcIndex] + " " + bestScore);
                 // }
                 // else
                 // {
                 //     Console.WriteLine("No biome");
                 // }
-                if (indexToModify != solution.Locations.Count - 1)
-                {
-                    solution.Locations.RemoveAt(solution.Locations.Count - 1);
-                }
+                // if (indexToModify != solution.Locations.Count - 1)
+                // {
+                //     Console.WriteLine("Removed new empty location");
+                //     solution.Locations.RemoveAt(solution.Locations.Count - 1);
+                // }
             }
             return solution;
         }

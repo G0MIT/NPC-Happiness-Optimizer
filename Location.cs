@@ -34,7 +34,7 @@ namespace HappinessOptimizer
             return true;
         }
 
-        public bool addNpc(Npc npc)
+        public bool AddNpc(Npc npc)
         {
             Npcs.Add(npc);
             npc.CurrentLocation = this;
@@ -54,7 +54,7 @@ namespace HappinessOptimizer
         public double Score(Npc npc)
         {
             Location location = Clone();
-            location.addNpc(npc.Clone());
+            location.AddNpc(npc.Clone());
             return location.Score() - Score();
         }
 
@@ -68,7 +68,7 @@ namespace HappinessOptimizer
         public double Score(Npc npc, Biome biome)
         {
             Location location = Clone();
-            location.addNpc(npc.Clone());
+            location.AddNpc(npc.Clone());
             location.addBiome(biome);
             return location.Score() - Score();
         }
