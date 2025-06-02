@@ -75,11 +75,11 @@ namespace HappinessOptimizer
                 // {
                 //     Console.WriteLine("No biome");
                 // }
-                // if (indexToModify != solution.Locations.Count - 1)
-                // {
-                //     Console.WriteLine("Removed new empty location");
-                //     solution.Locations.RemoveAt(solution.Locations.Count - 1);
-                // }
+                if (indexToModify != solution.Locations.Count - 1)
+                {
+                    Console.WriteLine("Removed new empty location");
+                    solution.Locations.RemoveAt(solution.Locations.Count - 1);
+                }
             }
             return solution;
         }
