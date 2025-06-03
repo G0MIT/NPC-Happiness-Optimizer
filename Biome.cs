@@ -24,13 +24,15 @@ namespace HappinessOptimizer
 
         public bool IsCompatible(Location location)
         {
-            if (location.Biomes.Count > 0) {
+            if (location.Biomes.Count > 0)
+            {
                 return location.Biomes.TrueForAll(IsCompatible);
             }
             return true;
         }
 
-        public bool CompareTo(Biome other) {
+        public bool CompareTo(Biome other)
+        {
             return Priority > other.Priority;
         }
         public override string ToString()

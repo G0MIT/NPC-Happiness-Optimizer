@@ -21,7 +21,14 @@ namespace HappinessOptimizer
 
         public Location Clone()
         {
-            return new Location(new List<Biome>(Biomes), new List<Npc>(Npcs));
+            Location location = new();
+            foreach (Npc npcToAdd in Npcs) {
+                location.AddNpc(npcToAdd.Clone());
+            }
+            foreach (Biome biomeToAdd in Biomes) {
+                location.AddBiome(biomeToAdd);
+            }
+            return location;
         }
 
         public bool AddBiome(Biome biome)

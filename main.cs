@@ -37,30 +37,32 @@ class Program
         };
         List<Biome> biomes = new List<Biome>
         {
-            new Biome("ocean", "Ocean", 3, new List<string>{}),
-            new Biome("desert", "Desert", 3, new List<string>{}),
-            new Biome("hallow", "Hallowed", 2, new List<string>{}),
-            new Biome("underground", "Underground", 1, new List<string>{}),
-            new Biome("jungle", "Jungle", 3, new List<string>{}),
-            new Biome("snow", "Snow", 3, new List<string>{}),
-            new Biome("forest", "Forest...", 3, new List<string>{}),
+            new Biome("ocean", "Ocean", 3, new List<string>{"forest","desert"}),
+            new Biome("desert", "Desert", 3, new List<string>{"forest","ocean","snow","jungle"}),
+            new Biome("hallow", "Hallowed", 2, new List<string>{"forest"}),
+            new Biome("underground", "Underground", 1, new List<string>{"forest"}),
+            new Biome("jungle", "Jungle", 3, new List<string>{"forest","ocean","snow","desert"}),
+            new Biome("snow", "Snow", 3, new List<string>{"forest","ocean","desert","jungle"}),
+            new Biome("forest", "Forest", 3, new List<string>{"ocean","desert","hallow","underground","jungle","snow"}),
         };
-        foreach (Npc npc in npcs) {
+        foreach (Npc npc in npcs)
+        {
             Console.WriteLine("Please input a value for the following NPC:\n" + npc.DisplayName);
             string input = Console.ReadLine();
             int value;
-            
-            while (!int.TryParse(input, out value)) {
+
+            while (!int.TryParse(input, out value))
+            {
                 Console.WriteLine("Please input a valid value for the following NPC: " + npc.DisplayName);
                 input = Console.ReadLine();
             }
             npc.Value = value;
         }
         npcs.Sort((a, b) => b.Value.CompareTo(a.Value));
-        
+
         Solver solver = new Solver(npcs, biomes);
         Solution solution = solver.Solve();
-        
+
         Console.WriteLine(solution);
         Console.WriteLine(solution.Locations[0].Npcs[0]);
         Console.WriteLine("Total score for this solution: " + solution.Score());

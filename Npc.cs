@@ -212,7 +212,7 @@ namespace HappinessOptimizer
         public double Score()
         {
             CalculateModifiers();
-            return Value / BuyModifier;
+            return Math.Round(Value / BuyModifier,3);
         }
 
         public Npc Clone()

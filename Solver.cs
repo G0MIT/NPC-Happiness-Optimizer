@@ -4,7 +4,9 @@ namespace HappinessOptimizer
 {
     public class Solver
     {
-        private Solution BestSolution;
+        private const int RunCount = 1000;
+        private List<Solution> BestSolutions;
+        private readonly Solution StartingSolution;
         private readonly List<Npc> Npcs;
         private readonly List<Biome> Biomes;
 
@@ -12,13 +14,44 @@ namespace HappinessOptimizer
         {
             Npcs = npcs;
             Biomes = biomes;
-            BestSolution = GenerateStartingSolution();
+            StartingSolution = GenerateStartingSolution();
+            BestSolutions = new List<Solution>();
         }
 
         public Solution Solve()
         {
             // TODO: Implement solve
-            return BestSolution;
+            Solution bestSolution = StartingSolution;
+            Solution currentSolution = StartingSolution;
+            List<Solution> previousSolutions = new();
+            for (int i = 0; i < RunCount; i++)
+            {
+                Solution nextSolution = null;
+                List<Solution> nearestSolutions = GenerateNearestSolutions(currentSolution);
+                double bestScore = currentSolution.Score();
+                foreach (Solution solution in nearestSolutions)
+                {
+                    if (solution.Score() > bestScore)
+                    {
+                        nextSolution = solution;
+                        bestScore = solution.Score();
+                    }
+                }
+                if (nextSolution == null)
+                {
+                    Random random = new();
+                    do
+                    {
+                        nextSolution = nearestSolutions[random.Next(0, nearestSolutions.Count)];
+                    } while (previousSolutions.Contains(nextSolution));
+                }
+                if (nextSolution.Score() > bestScore)
+                {
+                    bestSolution = nextSolution;
+                }
+                currentSolution = nextSolution;
+            }
+            return bestSolution;
         }
 
         public Solution GenerateStartingSolution()
@@ -41,14 +74,11 @@ namespace HappinessOptimizer
                     foreach (string biomeName in Npcs[npcIndex].LovedBiomes)
                     {
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        if (biome != null && biome.IsCompatible(solution.Locations[locationIndex]))
+                        double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        if (hybridScore > score)
                         {
-                            double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                            if (hybridScore > score)
-                            {
-                                score = hybridScore;
-                                biomeToAdd = biome;
-                            }
+                            score = hybridScore;
+                            biomeToAdd = biome;
                         }
                     }
 
@@ -56,14 +86,11 @@ namespace HappinessOptimizer
                     foreach (string biomeName in Npcs[npcIndex].LikedBiomes)
                     {
                         Biome biome = Biomes.Find(b => b.Name == biomeName);
-                        if (biome != null && biome.IsCompatible(solution.Locations[locationIndex]))
+                        double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
+                        if (hybridScore > score)
                         {
-                            double hybridScore = solution.Locations[locationIndex].Score(Npcs[npcIndex], biome);
-                            if (hybridScore > score)
-                            {
-                                score = hybridScore;
-                                biomeToAdd = biome;
-                            }
+                             score = hybridScore;
+                            biomeToAdd = biome;
                         }
                     }
                     Console.WriteLine("Score for location with index " + locationIndex + " is " + score);
@@ -74,6 +101,7 @@ namespace HappinessOptimizer
                         bestBiome = biomeToAdd;
                     }
                 }
+                Console.WriteLine("Adding " + Npcs[npcIndex].DisplayName + " to the location with index " + indexToModify);
                 solution.Locations[indexToModify].AddNpc(Npcs[npcIndex]);
                 solution.Locations[indexToModify].AddBiome(bestBiome);
                 // if (bestBiome != null)
@@ -92,10 +120,31 @@ namespace HappinessOptimizer
             return solution;
         }
 
-        public List<Solution> GenerateNearestSolutions()
+        public List<Solution> GenerateNearestSolutions(Solution baseSolution)
         {
-            // TODO: Implement generateNearestSolutions
-            return new List<Solution>();
+            List<Solution> nearestSolutions = new();
+            for (int i = 0; i < Npcs.Count; i++)
+            {
+                for (int j = i + 1; j < Npcs.Count; j++)
+                {
+                    Solution solution = baseSolution.Clone();
+                    solution.SwapNpcs(Npcs[i], Npcs[j]);
+                    nearestSolutions.Add(solution);
+                }
+            }
+            for (int i = 0; i < baseSolution.Locations.Count; i++)
+            {
+                for (int j = 0; j < Biomes.Count; j++)
+                {
+                    Solution solution = baseSolution.Clone();
+                    if (solution.Locations[i].AddBiome(Biomes[j]))
+                    {
+                        nearestSolutions.Add(solution);
+                    }
+                }
+            }
+            
+            return nearestSolutions;
         }
 
 
