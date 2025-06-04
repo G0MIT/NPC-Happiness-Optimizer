@@ -64,7 +64,6 @@ class Program
         Solution solution = solver.Solve();
 
         Console.WriteLine(solution);
-        Console.WriteLine(solution.Locations[0].Npcs[0]);
         Console.WriteLine("Total score for this solution: " + solution.Score());
     }
 }

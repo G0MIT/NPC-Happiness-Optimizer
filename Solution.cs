@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 namespace HappinessOptimizer
 {
     public class Solution
@@ -18,6 +19,10 @@ namespace HappinessOptimizer
         {
             Location location1 = Locations.Find(l => l.Npcs.Contains(npc1));
             Location location2 = Locations.Find(l => l.Npcs.Contains(npc2));
+            if (location1 == null || location2 == null)
+            {
+                return;
+            }
             location1.Npcs.Remove(npc1);
             location2.Npcs.Remove(npc2);
             location1.AddNpc(npc2);
