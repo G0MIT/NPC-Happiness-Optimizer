@@ -20,7 +20,7 @@ namespace HappinessOptimizer
 
         public Solution Solve()
         {
-            // TODO: Implement solve
+            // Tabu Search
             Solution bestSolution = StartingSolution;
             Solution currentSolution = StartingSolution;
             List<Solution> previousSolutions = new();
@@ -44,7 +44,12 @@ namespace HappinessOptimizer
                     {
                         nextSolution = nearestSolutions[random.Next(0, nearestSolutions.Count)];
                     } while (previousSolutions.Contains(nextSolution));
-                }
+
+                            if (previousSolutions.Contains(nextSolution))
+                            {
+                                continue;
+                            }
+                 
                 if (nextSolution.Score() > bestScore)
                 {
                     bestSolution = nextSolution;
@@ -104,14 +109,6 @@ namespace HappinessOptimizer
                 Console.WriteLine("Adding " + Npcs[npcIndex].DisplayName + " to the location with index " + indexToModify);
                 solution.Locations[indexToModify].AddNpc(Npcs[npcIndex]);
                 solution.Locations[indexToModify].AddBiome(bestBiome);
-                // if (bestBiome != null)
-                // {
-                //     Console.WriteLine(bestBiome + " " + Npcs[npcIndex] + " " + bestScore);
-                // }
-                // else
-                // {
-                //     Console.WriteLine("No biome");
-                // }
                 if (indexToModify != solution.Locations.Count - 1)
                 {
                     solution.Locations.RemoveAt(solution.Locations.Count - 1);

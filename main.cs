@@ -29,7 +29,6 @@ class Program
             new Npc("stylist", "Stylist", new string[]{"dye"}, new string[]{"princess","pirate"}, new string[]{"tavernkeep"}, new string[]{"tinkerer"}, new string[]{}, new string[]{"ocean"}, new string[]{"snow"}, new string[]{}),
             new Npc("tavernkeep", "Tavernkeep", new string[]{"demo"}, new string[]{"princess","tinkerer"}, new string[]{"guide"}, new string[]{"dye"}, new string[]{}, new string[]{"hallow"}, new string[]{"snow"}, new string[]{}),
             new Npc("tax", "Tax Collector", new string[]{"merchant"}, new string[]{"princess","party"}, new string[]{"demo","mechanic"}, new string[]{"santa"}, new string[]{}, new string[]{"snow"}, new string[]{"hallow"}, new string[]{}),
-            //probably truffle subclass
             new Npc("truffle", "Truffle", new string[]{"guide"}, new string[]{"princess","dryad"}, new string[]{"clothier"}, new string[]{"witch"}, new string[]{}, new string[]{"mushroom"}, new string[]{}, new string[]{}),
             new Npc("witch", "Witch Doctor", new string[]{}, new string[]{"princess","dryad","guide"}, new string[]{"nurse"}, new string[]{"truffle"}, new string[]{}, new string[]{"jungle"}, new string[]{"hallow"}, new string[]{}),
             new Npc("wiz", "Wizard", new string[]{"golfer"}, new string[]{"princess","merchant"}, new string[]{"witch"}, new string[]{"cyborg"}, new string[]{}, new string[]{"hallow"}, new string[]{}, new string[]{}),
